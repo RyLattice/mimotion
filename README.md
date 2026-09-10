@@ -181,7 +181,7 @@
 
 ### 八、忘记配置后的处理
 
-- 当长时间没有使用或者忘记了配置，可以通过手动触发工作流来发送配置信息到企业微信通知中，或者telegram机器人，请务必配置在私有的企业微信或telegram群组中，避免密码等敏感信息泄露给别人
+- 当长时间没有使用或者忘记了配置，可以通过手动触发工作流来发送配置信息到企业微信通知中，或者telegram机器人，请务必配置在私有的企业微信或telegram群组中，避免密码等敏感信息泄露给别人。
 - 步骤：
   - 首先配置Secrets：`INSPECT_WECHAT_HOOK_KEY` 配置企业微信机器人的key，具体请参考企业微信机器人文档。
   - telegram配置Secrets：`INSPECT_TELEGRAM_BOT_TOKEN`和`INSPECT_TELEGRAM_CHAT_ID` 配置机器人的token和聊天chatId，具体请参考TelegramBot文档。

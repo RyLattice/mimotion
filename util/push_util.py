@@ -206,17 +206,29 @@ def push_to_wechat_webhook(exec_results, summary, config: PushConfig):
     # 判断是否需要微信推送
     if config.push_wechat_webhook_key and config.push_wechat_webhook_key != '' and config.push_wechat_webhook_key != 'NO':
 
-        content = f'## {summary}'
+        # 1. 改“执行账号总数”为“执行总数”
+        content = f'## {summary.replace("执行账号总数", "执行总数")}'
+        
         if len(exec_results) >= config.push_plus_max:
-            content += '\n- 账号数量过多，详细情况请前往github actions中查看'
+            content += '\n- 执行数量过多，详细情况请前往github actions中查看'
         else:
             for exec_result in exec_results:
                 success = exec_result['success']
+                
+                # 2. 改“账号”为“效果”
+                user_part = f'效果：{exec_result["user"]}'
+                
                 if success is not None and success is True:
-                    content += f'\n- 账号：{exec_result["user"]}刷步数成功，接口返回：{exec_result["msg"]}'
+                    # 3. 改“刷步数成功”为“执行成功”
+                    # 4. 改“修改步数”为“修改效果”
+                    msg = exec_result["msg"].replace('修改步数', '修改效果')
+                    content += f'\n- {user_part}执行成功，接口返回：{msg}'
                 else:
-                    content += f'\n- 账号：{exec_result["user"]}刷步数失败，失败原因：{exec_result["msg"]}'
-        push_wechat_webhook(config.push_wechat_webhook_key, f"{format_now()} 刷步数通知", content)
+                    # 失败情况也改成“执行失败”
+                    content += f'\n- {user_part}执行失败，失败原因：{exec_result["msg"]}'
+        
+        # 5. 改“刷步数通知”为“结果展示”
+        push_wechat_webhook(config.push_wechat_webhook_key, f"{format_now()} 结果展示", content)
     else:
         print("未配置 WECHAT_WEBHOOK_KEY 跳过微信推送")
 
